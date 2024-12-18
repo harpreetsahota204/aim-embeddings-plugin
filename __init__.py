@@ -81,7 +81,7 @@ class AIMv2Embeddings(foo.Operator):
 
         inputs.enum(
             "model_name",
-            choices=AIMv2_ARCHS,
+            values=model_dropdown.values(),
             label="Embedding Model",
             description="Choose the AIMv2 embedding model you want to use:",
             view=model_dropdown,
@@ -104,7 +104,7 @@ class AIMv2Embeddings(foo.Operator):
         
         inputs.enum(
             "embedding_types",
-            embedding_types.values(),
+            values=embedding_types.values(),
             view=embedding_types,
             caption="Which embedding approach do you want to use?",
             required=True
