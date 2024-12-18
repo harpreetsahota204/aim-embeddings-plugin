@@ -11,39 +11,6 @@ with add_sys_path(os.path.dirname(os.path.abspath(__file__))):
         AIMv2_ARCHS,
     )
 
-
-def _execution_mode(ctx, inputs):
-    delegate = ctx.params.get("delegate", False)
-
-    if delegate:
-        description = "Uncheck this box to execute the operation immediately"
-    else:
-        description = "Check this box to delegate execution of this task"
-
-    inputs.bool(
-        "delegate",
-        default=False,
-        required=True,
-        label="Delegate execution?",
-        description=description,
-        view=types.CheckboxView(),
-    )
-
-    if delegate:
-        inputs.view(
-            "notice",
-            types.Notice(
-                label=(
-                    "You've chosen delegated execution. Note that you must "
-                    "have a delegated operation service running in order for "
-                    "this task to be processed. See "
-                    "https://docs.voxel51.com/plugins/index.html#operators "
-                    "for more information"
-                )
-            ),
-        )
-
-
 class AIMv2Embeddings(foo.Operator):
     @property
     def config(self):
@@ -57,7 +24,9 @@ class AIMv2Embeddings(foo.Operator):
             # A description for the operator
             description="Compute embeddings using AIMv2 Models",
 
-            icon="/assets/apple-logo.svg",
+            icon="/assets/icons8-apple.svg",
+            light_icon="/assets/apple-logo.svg"
+
             )
 
 
@@ -113,7 +82,15 @@ class AIMv2Embeddings(foo.Operator):
             description="Name of the field to store the embeddings in."
             )
         
-        _execution_mode(ctx, inputs)
+        inputs.bool(
+            "delegate",
+            default=False,
+            required=True,
+            label="Delegate execution?",
+            description=("If you choose to delegate this operation you must first have a delegated service running. "
+            "You can launch a delegated service by running `fiftyone delegated launch` in your terminal"),
+            view=types.CheckboxView(),
+        )
 
         inputs.view_target(ctx)
 
