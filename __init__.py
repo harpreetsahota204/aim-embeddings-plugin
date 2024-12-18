@@ -11,6 +11,24 @@ with add_sys_path(os.path.dirname(os.path.abspath(__file__))):
         AIMv2_ARCHS,
     )
 
+def _handle_calling(
+        uri, 
+        sample_collection, 
+        model_name,
+        emb_field,
+        embedding_types, 
+        delegate=False
+        ):
+    ctx = dict(dataset=sample_collection)
+
+    params = dict(
+        model_name=model_name,
+        emb_field=emb_field,
+        embedding_types=embedding_types,
+        delegate=delegate
+        )
+    return foo.execute_operator(uri, ctx, params=params)
+
 class AIMv2Embeddings(foo.Operator):
     @property
     def config(self):
@@ -130,6 +148,23 @@ class AIMv2Embeddings(foo.Operator):
             )
         
         ctx.ops.reload_dataset()
+
+    def __call__(
+            self, 
+            sample_collection, 
+            model_name, 
+            emb_field,
+            embedding_types,
+            delegate=False
+            ):
+        return _handle_calling(
+            self.uri,
+            sample_collection,
+            model_name,
+            emb_field,
+            embedding_types, 
+            delegate=False
+            )
 
 def register(p):
     """Always implement this method and register() each operator that your
