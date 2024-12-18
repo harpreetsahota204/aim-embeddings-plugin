@@ -1,4 +1,4 @@
-name: aim_embeddings
+name: "@harpreetsahota/aim_embeddings"
 description: A collection of example operators showing how to use the operator type system to build custom FiftyOne operations
 version: 1.0.0
 fiftyone:
