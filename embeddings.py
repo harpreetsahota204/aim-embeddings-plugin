@@ -109,7 +109,7 @@ class AIMv2EmbeddingModel(Model):
             image (PIL.Image.Image): The input image
 
         Returns:
-            Dict[str, np.ndarray]: Dictionary containing requested embeddings
+            np.ndarray: Requested embeddings
         """
         inputs = self.processor(images=image, return_tensors="pt")
         inputs = inputs.to(self.device)
@@ -128,13 +128,13 @@ class AIMv2EmbeddingModel(Model):
             args (np.ndarray): The input image as a numpy array
 
         Returns:
-            Dict[str, np.ndarray]: Dictionary containing requested embeddings
+            np.ndarray: Requested embeddings
         """
         image = Image.fromarray(args)
         predictions = self._predict(image)
         return predictions
 
-    def _predict_all(self, images: List[Image.Image]) -> List[Dict[str, np.ndarray]]:
+    def _predict_all(self, images: List[Image.Image]) -> List[np.ndarray]:
         """
         Performs prediction on a list of images.
 
@@ -142,7 +142,7 @@ class AIMv2EmbeddingModel(Model):
             images (List[PIL.Image.Image]): List of PIL images
 
         Returns:
-            List[Dict[str, np.ndarray]]: List of dictionaries containing embeddings for each image
+            List[np.ndarray]: List of embedding arrays for each image
         """
         return [self._predict(image) for image in images]
 
