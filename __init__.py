@@ -55,14 +55,14 @@ class AIMv2Embeddings(foo.Operator):
             label="AIMv2 Embeddings",  # required
 
             # A description for the operator
-            description="Compute embeddings using AIMv2 Models"
+            description="Compute embeddings using AIMv2 Models",
 
             icon="/assets/apple-logo.svg",
 
             # Whether the operator supports immediate and/or delegated execution
             allow_immediate_execution=True,
             allow_delegated_execution=True,
-        )
+            )
 
 
     def resolve_input(self, ctx):
