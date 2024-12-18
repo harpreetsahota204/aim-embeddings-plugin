@@ -58,10 +58,6 @@ class AIMv2Embeddings(foo.Operator):
             description="Compute embeddings using AIMv2 Models",
 
             icon="/assets/apple-logo.svg",
-
-            # # Whether the operator supports immediate and/or delegated execution
-            # allow_immediate_execution=True,
-            # allow_delegated_execution=True,
             )
 
 
@@ -109,11 +105,12 @@ class AIMv2Embeddings(foo.Operator):
             required=True
         )
 
+        emb_field = types.String()
+
         inputs.str(
-            "emb_field",
-            label="Embeddings Field",
-            description="Name of the field to store the embeddings in.",
+            "emb_field",            
             required=True,
+            description="Name of the field to store the embeddings in."
             )
         
         _execution_mode(ctx, inputs)
@@ -145,15 +142,17 @@ class AIMv2Embeddings(foo.Operator):
         """
         view = ctx.target_view()
         model_name = ctx.params.get("model_name")
-        embedding_types = ctx.params.get("embedding_types")
         emb_field = ctx.params.get("emb_field")
-
+        embedding_types = ctx.params.get("embedding_types")
+        
         run_embeddings_model(
             dataset=view,
             model_name=model_name,
             emb_field=emb_field,
             embedding_types=embedding_types
             )
+        
+        ctx.ops.reload_dataset()
 
 def register(p):
     """Always implement this method and register() each operator that your
