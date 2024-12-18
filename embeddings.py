@@ -150,8 +150,7 @@ def run_embeddings_model(
     dataset,
     model_name,
     emb_field,
-    embedding_types,
-    **kwargs,
+    embedding_types
     ):
 
     model = AIMv2EmbeddingModel(model_name, embedding_types)
