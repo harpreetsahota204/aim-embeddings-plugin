@@ -81,15 +81,15 @@ class AIMv2EmbeddingModel(Model):
     def media_type(self):
         return "image"
 
-    def extract_embeddings(self, last_hidden_state: torch.Tensor) -> Dict[str, np.ndarray]:
+    def extract_embeddings(self, last_hidden_state: torch.Tensor) -> np.ndarray:
         """
-        Extracts specified types of embeddings from the model's output.
+        Extracts specified type of embedding from the model's output.
 
         Args:
             last_hidden_state (torch.Tensor): The model's last hidden state
 
         Returns:
-            Dict[str, np.ndarray]: Dictionary of embeddings for each requested type
+            np.ndarray: The extracted embedding array (cls or mean based on initialization)
         """
 
         if self.embedding_types == "cls":
@@ -101,7 +101,7 @@ class AIMv2EmbeddingModel(Model):
             return mean_embedding
 
 
-    def _predict(self, image: Image.Image) -> Dict[str, np.ndarray]:
+    def _predict(self, image: Image.Image) -> np.ndarray:
         """
         Performs embedding extraction on a single image.
 
@@ -112,7 +112,7 @@ class AIMv2EmbeddingModel(Model):
             Dict[str, np.ndarray]: Dictionary containing requested embeddings
         """
         inputs = self.processor(images=image, return_tensors="pt")
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        inputs = inputs.to(self.device)
 
         with torch.no_grad():
             outputs = self.model(**inputs)
