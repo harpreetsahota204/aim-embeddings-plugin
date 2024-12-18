@@ -1,0 +1,9 @@
+name: aim_embeddings
+description: A collection of example operators showing how to use the operator type system to build custom FiftyOne operations
+version: 1.0.0
+fiftyone:
+  version: "*"
+url: https://github.com/voxel51/fiftyone-plugins/tree/main/plugins/operator-examples
+license: Apache 2.0
+operators:
+  - apple_aim_embeddings
