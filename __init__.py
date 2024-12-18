@@ -43,10 +43,8 @@ class AIMv2Embeddings(foo.Operator):
             description="Compute embeddings using AIMv2 Models",
 
             icon="/assets/icons8-apple.svg",
-            light_icon="/assets/apple-logo.svg"
 
             )
-
 
     def resolve_input(self, ctx):
         """Implement this method to collect user inputs as parameters
