@@ -49,19 +49,19 @@ class AIMv2Embeddings(foo.Operator):
     def config(self):
         return foo.OperatorConfig(
             # The operator's URI: f"{plugin_name}/{name}"
-            name="apple_aim_embeddings",  # required
+            name="compute_aimv2_embeddings",  # required
 
             # The display name of the operator
-            label="AIMv2 Embeddings",  # required
+            label="Compute embeddings with AIMv2 models",  # required
 
             # A description for the operator
             description="Compute embeddings using AIMv2 Models",
 
             icon="/assets/apple-logo.svg",
 
-            # Whether the operator supports immediate and/or delegated execution
-            allow_immediate_execution=True,
-            allow_delegated_execution=True,
+            # # Whether the operator supports immediate and/or delegated execution
+            # allow_immediate_execution=True,
+            # allow_delegated_execution=True,
             )
 
 
@@ -74,7 +74,7 @@ class AIMv2Embeddings(foo.Operator):
         """
         inputs = types.Object()
 
-        model_dropdown = types.Dropdown(label="Select the embedding model you want to use")
+        model_dropdown = types.Dropdown(label="Choose the AIMv2 embedding model you want to use:")
 
         for arch in AIMv2_ARCHS:
             model_dropdown.add_choice(arch, label=arch)
@@ -83,12 +83,12 @@ class AIMv2Embeddings(foo.Operator):
             "model_name",
             values=model_dropdown.values(),
             label="Embedding Model",
-            description="Choose the AIMv2 embedding model you want to use:",
+            description="Select from one of the supported models. Note: The model weights will be downloaded from Hugging Face.",
             view=model_dropdown,
             required=True
         )
 
-        embedding_types = types.RadioGroup()
+        embedding_types = types.RadioGroup(label="Which embedding approach do you want to use?",)
 
         embedding_types.add_choice(
             "cls", 
@@ -106,21 +106,19 @@ class AIMv2Embeddings(foo.Operator):
             "embedding_types",
             values=embedding_types.values(),
             view=embedding_types,
-            caption="Which embedding approach do you want to use?",
             required=True
         )
 
         inputs.str(
             "emb_field",
             label="Embeddings Field",
-            description="Name field to store the embeddings in",
+            description="Name of the field to store the embeddings in.",
             required=True,
             )
         
         _execution_mode(ctx, inputs)
 
         inputs.view_target(ctx)
-
 
         return types.Property(inputs)
 
@@ -156,9 +154,6 @@ class AIMv2Embeddings(foo.Operator):
             emb_field=emb_field,
             embedding_types=embedding_types
             )
-        
-        ctx.ops.reload_dataset()
-
 
 def register(p):
     """Always implement this method and register() each operator that your
