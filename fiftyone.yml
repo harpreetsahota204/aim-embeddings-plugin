@@ -6,4 +6,4 @@ fiftyone:
 url: https://github.com/voxel51/fiftyone-plugins/tree/main/plugins/operator-examples
 license: Apache 2.0
 operators:
-  - aimv2_embeddings
+  - compute_aimv2_embeddings
