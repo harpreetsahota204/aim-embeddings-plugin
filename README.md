@@ -106,3 +106,18 @@ await embedding_operator(
     field_name="aimv2_embeddings",  # Name for the embeddings field
 )
 ```
+
+# Citation
+
+You can read the paper [here](https://arxiv.org/abs/2411.14402).
+
+```bibtex
+@misc{fini2024multimodal,
+    title={Multimodal Autoregressive Pre-training of Large Vision Encoders},
+    author={Enrico Fini and Mustafa Shukor and Xiujun Li and Philipp Dufter and Michal Klein and David Haldimann and Sai Aitharaju and Victor Guilherme Turrisi da Costa and Louis Béthune and Zhe Gan and Alexander T Toshev and Marcin Eichner and Moin Nabi and Yinfei Yang and Joshua M. Susskind and Alaaeldin El-Nouby},
+    year={2024},
+    eprint={2411.14402},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}
+```
