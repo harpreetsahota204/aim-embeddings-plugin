@@ -29,8 +29,12 @@ AIMv2_ARCHS = [
 def AIMv2_activator():
     return find_spec("transformers") is not None
 
-def get_device():
-    """Helper function to determine the best available device."""
+def get_device() -> str:
+    """Helper function to determine the best available device.
+    
+    Returns:
+        str: Device identifier ('cuda', 'mps', or 'cpu')
+    """
     if torch.cuda.is_available():
         device = "cuda"
         print(f"Using CUDA device: {torch.cuda.get_device_name(0)}")
@@ -56,6 +60,15 @@ class AIMv2EmbeddingModel(Model):
     """
 
     def __init__(self, model_name, embedding_types):
+        """Initialize the AIMv2EmbeddingModel.
+        
+        Args:
+            model_name (str): Name of the pretrained model to use
+            embedding_types (str): Type of embedding to extract ('cls' or 'mean')
+            
+        Raises:
+            ValueError: If embedding_types is not 'cls' or 'mean'
+        """
         self.model_name = model_name
         self.embedding_types = embedding_types
 
@@ -82,14 +95,13 @@ class AIMv2EmbeddingModel(Model):
         return "image"
 
     def extract_embeddings(self, last_hidden_state: torch.Tensor) -> np.ndarray:
-        """
-        Extracts specified type of embedding from the model's output.
+        """Extract specified type of embedding from the model's output.
 
         Args:
-            last_hidden_state (torch.Tensor): The model's last hidden state
+            last_hidden_state (torch.Tensor): The model's last hidden state tensor of shape (1, seq_len, hidden_dim)
 
         Returns:
-            np.ndarray: The extracted embedding array (cls or mean based on initialization)
+            np.ndarray: The extracted embedding array of shape (hidden_dim,)
         """
 
         if self.embedding_types == "cls":
@@ -102,14 +114,13 @@ class AIMv2EmbeddingModel(Model):
 
 
     def _predict(self, image: Image.Image) -> np.ndarray:
-        """
-        Performs embedding extraction on a single image.
+        """Perform embedding extraction on a single image.
 
         Args:
-            image (PIL.Image.Image): The input image
+            image (Image.Image): The input PIL image
 
         Returns:
-            np.ndarray: Requested embeddings
+            np.ndarray: Extracted embedding array of shape (hidden_dim,)
         """
         inputs = self.processor(images=image, return_tensors="pt")
         inputs = inputs.to(self.device)
@@ -121,20 +132,19 @@ class AIMv2EmbeddingModel(Model):
         return self.extract_embeddings(last_hidden_state)
 
     def predict(self, args: np.ndarray) -> Dict[str, np.ndarray]:
-        """
-        Predicts embeddings for the given image.
+        """Predict embeddings for the given image array.
 
         Args:
-            args (np.ndarray): The input image as a numpy array
+            args (np.ndarray): The input image as a numpy array of shape (H, W, C)
 
         Returns:
-            np.ndarray: Requested embeddings
+            np.ndarray: Extracted embedding array of shape (hidden_dim,)
         """
         image = Image.fromarray(args)
         predictions = self._predict(image)
         return predictions
 
-    def _predict_all(self, images: List[Image.Image]) -> List[np.ndarray]:
+    def predict_all(self, images: List[Image.Image]) -> List[np.ndarray]:
         """
         Performs prediction on a list of images.
 
@@ -144,7 +154,7 @@ class AIMv2EmbeddingModel(Model):
         Returns:
             List[np.ndarray]: List of embedding arrays for each image
         """
-        return [self._predict(image) for image in images]
+        return [self.predict(image) for image in images]
 
 def run_embeddings_model(
     dataset,
@@ -152,6 +162,14 @@ def run_embeddings_model(
     emb_field,
     embedding_types
     ):
+    """Run the embedding model on a FiftyOne dataset.
+
+    Args:
+        dataset (fo.Dataset): The FiftyOne dataset to process
+        model_name (str): Name of the pretrained model to use
+        emb_field (str): Name of the field to store embeddings in
+        embedding_types (str): Type of embedding to extract ('cls' or 'mean')
+    """
 
     model = AIMv2EmbeddingModel(model_name, embedding_types)
 
