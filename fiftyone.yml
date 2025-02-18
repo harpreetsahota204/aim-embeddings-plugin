@@ -1,6 +1,6 @@
 name: "@harpreetsahota/aimv2_embeddings"
 description: Compute embeddings using AIMv2 Models
-version: 1.0.0
+version: 1.0.1
 fiftyone:
   version: "*"
 url: https://github.com/harpreetsahota204/aim-embeddings-plugin
