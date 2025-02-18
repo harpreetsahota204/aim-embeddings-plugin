@@ -91,8 +91,8 @@ You can then compute embeddings on your dataset by running the operator with you
 embedding_operator(
     dataset,
     model_name="apple/aimv2-large-patch14-224",  # Choose any supported model
-    embedding_type="cls",  # Either "cls" or "mean"
-    field_name="aimv2_embeddings",  # Name for the embeddings field
+    embedding_types="cls",  # Either "cls" or "mean"
+    emb_field="aimv2_embeddings",  # Name for the embeddings field
 )
 ```
 
@@ -102,8 +102,8 @@ If you're running in a notebook, it's recommended to launch a [Delegated operati
 await embedding_operator(
     dataset,
     model_name="apple/aimv2-large-patch14-224",  # Choose any supported model
-    embedding_type="cls",  # Either "cls" or "mean"
-    field_name="aimv2_embeddings",  # Name for the embeddings field
+    embedding_types="cls",  # Either "cls" or "mean"
+    emb_field="aimv2_embeddings",  # Name for the embeddings field
 )
 ```
 
